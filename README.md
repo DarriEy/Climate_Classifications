@@ -84,4 +84,10 @@ Feel free to open issues or submit pull requests with improvements.
 
 ## License
 
-[Add your chosen license here]
+This project is licensed under the GNU General Public License v3.0 
+
+## Contact
+
+Darri Eythorsson, University of Calgary
+
+darri.eythorsson@ucalgary.ca
