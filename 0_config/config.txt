@@ -1,0 +1,103 @@
+## Contains settings for CAMELS-spat processing
+# Tracking certain settings (such as local file locations) here helps porting the code to other machines.
+# Tracking data sources (URLs) here helps transparency. 
+
+# Overview:
+# [setting] | [value] | [type] # [description]
+#
+# [setting]     : Scripts look for this string to identify the line in this file that contains the information they need.
+# [value]       : Value of the setting used by the scripts. 
+# [type]        : Data type the value is converted to in the script. 
+# [description] : Description for user's benefit
+
+
+# Main settings
+code_path | /Users/darrieythorsson/Code/climateClassifications/   | string  # Root path of processing code
+data_path | /Users/darrieythorsson/Data/climateClassifications/   | string  # Root path of data location
+temp_path | /Users/darrieythorsson/Data/climateClassifications/   | string  # Path to temporary data folder - good for intermediate storage
+
+# 1. Python setup
+venv_path | /Users/darrieythorsson/Code/climateClassifications  | string  # Path where the Python virtual environment will be created
+venv_name | .cClass_venv                                         | string  # Virtual environment name
+reqs_path | 1_Python_setup/                                     | string  # Sub-folders in root that contain requirements
+reqs_file | 0_requirements.txt                                  | string  # Python environment requirements for `pip install -r reqs.txt`
+
+# 2. Reference shapefiles
+ref_shps_path          | reference_shapes                                                                                                          | string  # Main folder for reference shapefiles. Internal order hard-coded in processing files. Appended to 'data_path'
+us_camels_meta_url     | https://gdex.ucar.edu/dataset/camels/file/camels_attributes_v2.0.xlsx                                                     | string  # Download URL for CAMELS-US metadata information
+us_camels_topo_url     | https://gdex.ucar.edu/dataset/camels/file/camels_topo.txt                                                                 | string  # Download URL for CAMELS-US topography information
+us_camels_name_url     | https://gdex.ucar.edu/dataset/camels/file/camels_name.txt                                                                 | string  # Download URL for CAMELS-US topography information
+us_camels_shps_url     | https://gdex.ucar.edu/dataset/camels/file/basin_set_full_res.zip                                                          | string  # Download URL for CAMELS-US shapefiles
+can_rhbn_meta_url      | https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/RHBN/RHBN_Metadata.xlsx                                           | string  # FTP URL for Reference Hydrometric Basin Network (RHBN) data downloads, specifically the metadata file
+can_hydat_db_url       | https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/Hydat_sqlite3_20230505.zip                                        | string  # FTP URL for HYDAT database download
+can_hydat_meta_url     | https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/HYDAT_Definition_EN.pdf                                           | string  # FTP URL for HYDAT database description download
+can_wsc_2016_shps_url  | https://donnees.ec.gc.ca/data/water/products/national-hydrometric-network-basin-polygons/WSC_Basins.gdb.zip               | string  # Download URL for WSC 2016 reference shapefiles
+can_wsc_2022_shps_url  | https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/HydrometricNetworkBasinPolygons/*.zip                             | string  # Download URL for WSC 2022 reference shapefiles; * should be replaced by 01, 02, .., 11
+can_wsc_2022_meta_url  | https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/HydrometricNetworkBasinPolygons/Prerelease_included_stations.txt  | string  # Download URL for WSC 2022 station list and meta data file
+can_wsc_2022_rdme_url  | https://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/HydrometricNetworkBasinPolygons/Read_me.pdf                       | string  # Download URL for WSC 2022 pre-release readme
+standard_time_shp_path | 0_standard_timezone_shapefile                                                                                             | string  # Folder inside [code_path] where the shapefile with standard time zone definitions can be found
+standard_time_shp_name | can_usa_timezones.shp                                                                                                     | string  # Name of the the shapefile with standard time zone definitions
+
+# 3. MERIT Hydro data
+merit_path          | merit_hydro_files                                                                | string  # Main folder for MERIT Hydro data and shapefiles. Sub-folders hard-coded in processing files. Appended to 'data_path'
+merit_download_area | -150,-60,0,60                                                                    | string  # Download coordinates for MERIT Hydro grids as ( lon_min, lon_max, lat_min, lat_max )
+merit_subset_area   | -145,-52,25,71                                                                   | string  # Subsetting coordinates that should just cover the area of interest ( lon_min, lon_max, lat_min, lat_max ). Checked in QGIS with reference shapes.
+merit_flow_acc_url  | http://hydro.iis.u-tokyo.ac.jp/~yamadai/MERIT_Hydro/distribute/v1.0/upa_{}{}.tar | string  # Download URL for Merit Hydro flow accumulation map
+merit_flow_dir_url  | http://hydro.iis.u-tokyo.ac.jp/~yamadai/MERIT_Hydro/distribute/v1.0/dir_{}{}.tar | string  # Download URL for Merit Hydro flow direction map
+merit_shps_hs_id    | ee4a497fbac2422d95b45e193c06cdc5                                                 | string  # HydroShare resource ID that contains MERIT Hydro-derived shapefiles
+
+# 4. Meta data file 
+cs_basin_path    | camels-spat-data          | string  # Name of the folder where all the Camels-spat data is supposed to go. Appended to 'data_path'
+cs_meta_name     | camels_spat_metadata.csv  | string  # Name of the metadata file to be generated and used
+cs_unusable_name | camels_spat_unusable.csv  | string  # Name of the metadata file that tracks which catchments we cannot use and why
+
+# 5. Basin delineation
+equal_area_crs  | ESRI:102008                | string  # Coordinate Reference System to calculate polygon areas in
+merged_shp_dir  | merged_lumped_shapes       | string  # Name of the folder where the merged shape will be stored. Appended to '[cs_basin_path] / basin_data'
+merged_shp_name | merged_lumped_outlines.shp | string  # Name of the file that contains the merged lumped shapes
+
+# 6. Flow data downloads
+usgs_start_t    | 1950-01-01               | string  # Start time for USGS data downloads
+usgs_start_e    | 2023-01-02               | string  # End time for USGS data downloads
+wsc_start_t     | 2021-06-01               | string  # Start time for WSC data downloads; currently limited because WSC only allows downloads up to present-18 months
+wsc_start_e     | 2023-01-02               | string  # End time for WSC data downloads
+hydat_start_t   | 1950-01-01               | string  # Start time for HYDAT data extraction
+hydat_start_e   | 2023-01-02               | string  # End time for HYDAT data extraction
+
+# 7. Forcing data downloads
+# n/a
+
+# 8. Geospatial data downloads
+geospatial_area      | -179.5,-50,5,85                                                                          | string  # Download coordinates for North American domain [85/-179.5/5/-50]
+geospatial_temp_path | geospatial_temp                                                                          | string  # Path for temporary data storage of geospatial data sets (before subsetting)
+dem_path             | merit                                                                                    | string  # Folder for the DEM downloads
+dem_url              | http://hydro.iis.u-tokyo.ac.jp/~yamadai/MERIT_Hydro/distribute/v1.0/elv_{}{}.tar         | string  # Download URL for Merit Hydro Adjusted Elevations
+soil_path            | soilgrids                                                                                | string  # Folder for soil downloads
+soil_url             | https://files.isric.org/soilgrids/latest/data/                                           | string  # Download URL for soilgrids files
+lake_path            | hydrolakes                                                                               | string  # Folder for hydrolakes downloads
+lake_url             | https://data.hydrosheds.org/file/hydrolakes/HydroLAKES_polys_v10_shp.zip                 | string  # Download URL for soilgrids files
+land_path            | glclu2019                                                                                | string  # Folder for glclu2019 downloads
+land_map_url         | https://storage.googleapis.com/earthenginepartners-hansen/GLCLU_2019/strata/{}_{}.tif    | string  # Download URL for glclu2019 maps
+land_strata_url      | https://storage.googleapis.com/earthenginepartners-hansen/GLCLU_2019/map/{}_{}.tif       | string  # Download URL for glclu2019 strata
+land_legend          | https://glad.umd.edu/sites/default/files/legend_0.xlsx                                   | string  # Download URL for land use legend
+land2_path           | modis_land                                                                               | string  # Folder for glclu2019 downloads
+land2_url            | https://e4ftl01.cr.usgs.gov/MOTA/MCD12Q1.061/                                            | string  # Download URL for MODIS LAI data
+land2_docs           | https://lpdaac.usgs.gov/documents/1409/MCD12_User_Guide_V61.pdf                          | string  # Download URL for MODIS LAI User Guide
+forest_path          | forest_height                                                                            | string  # Folder for Forest Extent and Height Change, 2000-2020 downloads
+forest_2000_url      | https://glad.umd.edu/users/Potapov/GLCLUC2020/Forest_height_2000/2000_{}_{}.tif          | string  # Download URL for FEHC maps
+forest_2020_url      | https://glad.umd.edu/users/Potapov/GLCLUC2020/Forest_height_2020/2020_{}_{}.tif          | string  # Download URL for FEHC maps
+soil_depth_path      | pelletier                                                                                | string  # Folder for Pelletier soil data downloads
+soil_depth_urls      | 0_config/pelletier_links.txt                                                             | string  # File with download links for Pelletier soil data, relative to 'code_path'
+lai_path             | lai                                                                                      | string  # Folder for MODIS LAI data downloads
+lai_url              | https://e4ftl01.cr.usgs.gov/MOTA/MCD15A2H.061/                                           | string  # Download URL for MODIS LAI data
+lai_docs             | https://lpdaac.usgs.gov/documents/926/MOD15_User_Guide_V61.pdf                           | string  # Download URL for MODIS LAI User Guide
+agriculture_path     | lgrip30                                                                                  | string  # Folder for LGRIP30 data downloads
+agriculture_url      | https://e4ftl01.cr.usgs.gov/COMMUNITY/LGRIP30.001/2014.01.01/                            | string  # Download URL for LGRIP30 data
+agriculture_docs     | https://lpdaac.usgs.gov/documents/1619/LGRIP30_User_Guide_v1.pdf                         | string  # Download URL for LGRIP30 User Guide
+geology_path         | glhymps                                                                                  | string  # Folder for GLHYMPS data downloads
+geology_url          | https://borealisdata.ca/file.xhtml?fileId=72026&version=1.0                              | string  # Download URL for LGRIP30 data
+climate_path         | worldclim                                                                                | string  # Folder for Pelletier soil data downloads
+climate_urls         | 0_config/worldclim_links.txt                                                             | string  # File with download links for Pelletier soil data, relative to 'code_path'
+
+# 9. Analysis
+image_path | /Users/wmk934/OneDrive - University of Calgary/Postdoc/Documents/papers/paper-Knoben-CAMELspat/img | string  # Path where images will be stored
